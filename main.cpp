@@ -107,12 +107,12 @@ void FourMandel(const int kPixels[4], int sz) {
 
   if (_mm256_testz_si256(_mask2, _mask2) != 1) goto repeat;
 
-#if defined(_WIN32)
+#ifdef _WIN32
   for (int i = 0; i < sz; ++i)
     pixel_color[kPixels[i]] = ColorFormula(int(_n.m256i_i64[3 - i]));
 #endif
 
-#if defined(__linux__)
+#ifdef __linux__
   for (int i = 0; i < sz; ++i)
     pixel_color[kPixels[i]] = ColorFormula(int(_n[3 - i]));
 #endif
