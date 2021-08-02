@@ -27,7 +27,7 @@ int pixel_mask[kWidth * kHeight], max_it = kDefaultIt;
 unsigned *pixel_color;
 double xx0 = -2, yy0 = 2, xx1 = 2, yy1 = 2 - 4 * kHeight / (double)kWidth;
 double x_offset = (xx1 - xx0) / kWidth, y_offset = (yy0 - yy1) / kHeight;
-bool running = true;
+bool running = true, should_draw = true;
 
 struct Vec2d {
   double x, y;
@@ -245,14 +245,16 @@ void HandleInput(SDL_Event event) {
       }
       x_offset = (xx1 - xx0) / kWidth;
       y_offset = (yy0 - yy1) / kHeight;
+      should_draw = true;
       break;
     }
     case SDL_KEYDOWN: {
       switch (event.key.keysym.sym) {
-        case SDLK_UP:  max_it += 50; break;
-        case SDLK_DOWN: if (max_it > 100) max_it -= 50; break;
+        case SDLK_UP:  max_it += 50, should_draw = true; break;
+        case SDLK_DOWN: if (max_it > 100) max_it -= 50, should_draw = true;; break;
         default: break;
       }
+      break;
     }
     default: break;
   }
@@ -278,17 +280,19 @@ int main(int argc, char* argv[]) {
       while (running) {
         while (SDL_PollEvent(&event))
           HandleInput(event);
-
-        SDL_RenderClear(renderer);
-
-        int pitch;
-        SDL_LockTexture(texture, nullptr, (void**)(&pixel_color), &pitch);
-#pragma omp parallel for
-        for (int i = 0; i < kChunks; ++i)
-          BorderTracer bt(i * kChunkSize, (i + 1) * kChunkSize - 1);
-        SDL_UnlockTexture(texture);
-        SDL_RenderCopy(renderer, texture, nullptr, nullptr);
-        SDL_RenderPresent(renderer);
+        
+        if (should_draw) {
+          int pitch;
+          SDL_RenderClear(renderer);
+          SDL_LockTexture(texture, nullptr, (void**)(&pixel_color), &pitch);
+          #pragma omp parallel for
+          for (int i = 0; i < kChunks; ++i)
+            BorderTracer bt(i * kChunkSize, (i + 1) * kChunkSize - 1);
+          SDL_UnlockTexture(texture);
+          SDL_RenderCopy(renderer, texture, nullptr, nullptr);
+          SDL_RenderPresent(renderer);
+        }
+        should_draw = false;
       }
     }
   }
