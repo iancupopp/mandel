@@ -1,5 +1,5 @@
 # C++/SDL2 Mandelbrot
-#### Currently looking for a better coloring function...
+>#### Currently looking for a better coloring function...
 + CPU bound
 + a couple optimizations: border tracing, multithreading (**OpenMP**) and SIMD (**AVX2**)
   _(if supported by your hardware)_
