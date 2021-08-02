@@ -6,6 +6,6 @@
 + **Zoom in/out with mouse wheel**
 + **Increase/decrease max iterations by pressing UP/DOWN**
 + Feel free to report bugs and make suggestions for improvement :)
-+ inspiration:
++ Inspiration:
    - https://bisqwit.iki.fi/jutut/kuvat/programming_examples/mandelbrotbtrace-sdl-openmp-simd.cc
    - https://github.com/OneLoneCoder/olcPixelGameEngine/blob/master/Videos/OneLoneCoder_PGE_Mandelbrot.cpp
