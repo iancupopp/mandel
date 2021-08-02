@@ -251,7 +251,7 @@ void HandleInput(SDL_Event event) {
     case SDL_KEYDOWN: {
       switch (event.key.keysym.sym) {
         case SDLK_UP:  max_it += 50, should_draw = true; break;
-        case SDLK_DOWN: if (max_it > 100) max_it -= 50, should_draw = true;; break;
+        case SDLK_DOWN: if (max_it > 100) max_it -= 50, should_draw = true; break;
         default: break;
       }
       break;
