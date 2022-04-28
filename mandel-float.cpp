@@ -86,7 +86,9 @@ void EightMandel(const int kPixels[8], int sz) {
   _ci = _mm256_fmadd_ps(_y, _y_offset, _yy0);
 
   _iterations = _mm256_set1_epi32x(max_it);
-  _n = _mm256_set1_epi32x(0, sz >= 2 ? 0 : 1e9, sz >= 3 ? 0 : 1e9, sz == 4 ? 0 : 1e9);
+  _n = _mm256_set1_epi32x(
+    sz >= 1 ? 0 : 1e9, sz >= 2 ? 0 : 1e9, sz >= 3 ? 0 : 1e9, sz >= 4 ? 0 : 1e9,
+    sz >= 5 ? 0 : 1e9, sz >= 6 ? 0 : 1e9, sz >= 7 ? 0 : 1e9, sz == 8 ? 0 : 1e9);
   _two = _mm256_set1_ps(2.0);
   _four = _mm256_set1_ps(4.0);
 
@@ -115,12 +117,12 @@ void EightMandel(const int kPixels[8], int sz) {
 
 #ifdef _WIN32
   for (int i = 0; i < sz; ++i)
-    pixel_color[kPixels[i]] = ColorFormula(int(_n.m256i_i32[3 - i]));
+    pixel_color[kPixels[i]] = ColorFormula(_n.m256i_i32[3 - i]);
 #endif
 
 #ifdef __linux__
   for (int i = 0; i < sz; ++i)
-    pixel_color[kPixels[i]] = ColorFormula(int(_n[3 - i]));
+    pixel_color[kPixels[i]] = ColorFormula(_n[3 - i]);
 #endif
 }
 
